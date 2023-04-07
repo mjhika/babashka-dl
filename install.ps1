@@ -41,11 +41,25 @@ function DownloadLatestBabashka {
     
     Invoke-WebRequest -Uri $latestDownloadUrl -OutFile $tmpf
     
+    # I'll have to go fix this later. Reads horribly in my opinion, but will inflate the archive regardless of PSVer
+    # The first if checks if you supplied a directory.
+    # The second if checks PS version
     if ($Directory) {
-        Expand-Archive -Path $tmpf -DestinationPath $Directory
+        if ($PSVersionTable.PSVersion.Major -lt 7) {
+            if (Test-Path -Path (Join-Path $Directory "bb.exe") -PathType Leaf) {Remove-Item (Join-Path $Directory "bb.exe")}
+            [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') > $null #redirect out to silence import
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($tmpf, (Resolve-Path $Directory).Path)
+        } else {
+            Expand-Archive -Path $tmpf -DestinationPath $Directory -Force
+        }
         Write-Host "Babashka is installed in $Directory"
     } else {
-        Expand-Archive -Path $tmpf -DestinationPath (Ensure-InstallDir) -Force
+        if ($PSVersionTable.PSVersion.Major -lt 7) {
+            [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') > $null #redirect out to silence import
+            [System.IO.Compression.ZipFile]::ExtractToDirectory($tmpf, (Ensure-InstallDir).FullName)
+        } else {
+            Expand-Archive -Path $tmpf -DestinationPath (Ensure-InstallDir) -Force
+        }
         Write-Host "Babashka is installed in C:\Program Files\Babashka"
         Ensure-InstallDirOnPath
     }
