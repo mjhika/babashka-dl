@@ -24,6 +24,7 @@ function Ensure-InstallDirOnPath {
         $local:DesiredEnvPath = "$OriginalEnvPath;$bbDir"
 
         Set-ItemProperty -Path 'Registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Control\Session Manager\Environment' -Name PATH -Value  $DesiredEnvPath
+        $env:path="$env:path;C:\Program Files\Babashka"
         Ensure-InstallDirOnPath
     }
 }
