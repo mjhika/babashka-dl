@@ -5,6 +5,10 @@ param (
 
 $ProgressPreference = 'SilentlyContinue'
 
+function Test-Elevation {
+    [bool](([System.Security.Principal.WindowsIdentity]::GetCurrent()).groups -match "S-1-5-32-544")    
+}
+
 function Ensure-InstallDir {
     $local:InstallDir = 'C:\Program Files\Babashka'
     if (Test-Path -Path $InstallDir -PathType Container) {
@@ -53,7 +57,7 @@ function DownloadLatestBabashka {
             Expand-Archive -Path $tmpf -DestinationPath $Directory -Force
         }
         Write-Host "Babashka is installed in $Directory"
-    } else {
+    } elseif (Test-Elevation) {
         if ($PSVersionTable.PSVersion.Major -lt 7) {
             [System.Reflection.Assembly]::LoadWithPartialName('System.IO.Compression.FileSystem') > $null #redirect out to silence import
             [System.IO.Compression.ZipFile]::ExtractToDirectory($tmpf, (Ensure-InstallDir).FullName)
@@ -62,6 +66,8 @@ function DownloadLatestBabashka {
         }
         Write-Host "Babashka is installed in C:\Program Files\Babashka"
         Ensure-InstallDirOnPath
+    } else {
+        Write-Error "To install to `$env:path you need to run as admin."
     }
 }
 
