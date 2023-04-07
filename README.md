@@ -14,9 +14,13 @@ I liked that [Michiel Borkent](https://github.com/borkdude) had the [install sh]
 ```powershell
 # to install in 'C:\Program Files\Babashka'
 irm "https://raw.githubusercontent.com/mjhika/babashka-dl/main/install.ps1" | iex
+# or
+irm "https://bb-dl.mjhika.com" | iex
 
 # to install in your current directory
 iex "& {$(irm https://raw.githubusercontent.com/mjhika/babashka-dl/main/install.ps1)} -Dir ."
+# or
+iex "& {$(irm bb-dl.mjhika.com)} -Dir ."
 ```
 
 
