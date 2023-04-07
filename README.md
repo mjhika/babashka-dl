@@ -25,4 +25,4 @@ iex "& {$(irm https://raw.githubusercontent.com/mjhika/babashka-dl/main/install.
 
 Right now I only have feature parity for install directory and download the latests version as that's my main use case. 
 
-Also unfortunately, the script currently only supports PowerShell 7. I believe this is because `Expand-Archive` changed from version 5 to 7 somewhere. When trying to use on PS 5 `Expand-Archive` will throw an error because temp file that is created is not a proper zip archive?
+~~Also unfortunately, the script currently only supports PowerShell 7. I believe this is because `Expand-Archive` changed from version 5 to 7 somewhere. When trying to use on PS 5 `Expand-Archive` will throw an error because temp file that is created is not a proper zip archive?~~
