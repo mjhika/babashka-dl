@@ -1,0 +1,26 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "./install.ps1 -Dir .",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "args": ["-Dir ."],
+            // Will install to the specified dir add -Version vX.X.X to the 
+            // string to debug that parameter
+            "cwd": "${workspaceRoot}"
+        },
+        { // this will fail if you're not running as admin
+            "name": "[Administrator] ./install.ps1",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${workspaceRoot}"
+        }
+    ]
+}
